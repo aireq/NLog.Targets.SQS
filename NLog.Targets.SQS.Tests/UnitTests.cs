@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NLog.Targets.SQS.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class UnitTests
     {
 
 
@@ -44,18 +44,27 @@ namespace NLog.Targets.SQS.Tests
 
                     System.Threading.Thread.Sleep(1000);
 
-                    var message = sqs_client.ReceiveMessage(target.QueueUrl);
+                    var messages = sqs_client.ReceiveMessage(target.QueueUrl);
 
-                    Assert.AreEqual(System.Net.HttpStatusCode.OK, message.HttpStatusCode);
-                    Assert.AreEqual(1, message.Messages.Count);
-                    Assert.AreEqual(testMessageBody, message.Messages[0].Body);
+                    Assert.AreEqual(System.Net.HttpStatusCode.OK, messages.HttpStatusCode);
+                    Assert.AreEqual(1, messages.Messages.Count);
+                    var message = messages.Messages[0];
 
-                    sqs_client.DeleteMessage(target.QueueUrl, message.Messages[0].ReceiptHandle);
+                    try
+                    {
+                        Assert.AreEqual(testMessageBody, message.Body);
+                        Assert.AreEqual("Info", message.Attributes["Level"]);
+                        Assert.AreEqual("NLog.Targets.SQS.Tests.UnitTests", message.Attributes["Logger"]);
+                        Assert.AreEqual("0", message.Attributes["SequenceID"]);
+                    }
+                    finally
+                    {
+                        sqs_client.DeleteMessage(target.QueueUrl, message.ReceiptHandle);
+                    }
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
