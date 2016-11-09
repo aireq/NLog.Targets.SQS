@@ -13,20 +13,5 @@
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2016 $author$</copyright>
     <tags>NLog targets AWS SQS</tags>
-
-
-    <dependencies>
-      <group targetFramework="net45">
-        <dependency id="NLog" version="4.3.11" />
-        <dependency id="AWSSDK.SQS" version="3.3.0.2" />
-        <dependency id="AWSSDK.Core" version="3.3.4" />
-      </group>
-    </dependencies>
-
-
-    <files>
-      <file src="..\NLog.Targets.SQS\bin\Release\NLog.Targets.SQS.dll" target="lib\net45" />
-    </files>
-
   </metadata>
 </package>
