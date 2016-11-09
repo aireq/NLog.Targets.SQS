@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NLog.Target.SQS")]
 [assembly: AssemblyDescription("NLog target for Amazon SQS")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Eric Anastas")]
 [assembly: AssemblyProduct("NLog.Target.SQS")]
 [assembly: AssemblyCopyright("Copyright ©  2016 Eric Anastas")]
 [assembly: AssemblyTrademark("")]
@@ -33,3 +33,4 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.1.0.*")]
+[assembly: AssemblyInformationalVersion("0.1.0")]
