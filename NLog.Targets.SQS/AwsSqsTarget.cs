@@ -169,13 +169,16 @@ namespace NLog.Targets.SQS
             //Check result for failed messages
             if (result.Failed.Count > 0)
             {
-                var m = result.Failed.Count.ToString() + " messages to Amazon SQS failed. See internal NLog log for details.";
+                var m = result.Failed.Count.ToString() + " messages sent to Amazon SQS failed. See internal NLog log for details.";
 
                 InternalLogger.Error(m);
 
                 foreach (var f in result.Failed)
                 {
-                    InternalLogger.Error("Message failed to send. " + f.Message + ". Code = " + f.Code + ", Id = " + f.Id + ", SenderFault = " + f.SenderFault.ToString());
+                    InternalLogger.Error("Message failed to send. Code = " + f.Code
+                        + ", Id = " + f.Id
+                        + ", SenderFault = " + f.SenderFault.ToString()
+                        + ", Message = " + f.Message);
                 }
 
                 if (ThrowExceptions) throw new Exception(m);
