@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.Targets.SQS", "NLog.Targets.SQS\NLog.Targets.SQS.csproj", "{7388332E-55D6-4079-8482-F71CBF2B78F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.Targets.SQS.Tests", "NLog.Targets.SQS.Tests\NLog.Targets.SQS.Tests.csproj", "{89C2D1A9-093B-4CE9-8270-D40F04A90405}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{7388332E-55D6-4079-8482-F71CBF2B78F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7388332E-55D6-4079-8482-F71CBF2B78F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7388332E-55D6-4079-8482-F71CBF2B78F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89C2D1A9-093B-4CE9-8270-D40F04A90405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89C2D1A9-093B-4CE9-8270-D40F04A90405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89C2D1A9-093B-4CE9-8270-D40F04A90405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89C2D1A9-093B-4CE9-8270-D40F04A90405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
