@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>NLog.Targets.SQS</id>
+    <version>$version$</version>
+    <title>NLog.Targets.SQS</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.githubusercontent.com/aireq/NLog.Targets.SQS/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/aireq/NLog.Targets.SQS</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2016 $author$</copyright>
+    <tags>NLog targets AWS SQS</tags>
+
+
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="NLog" version="4.3.11" />
+        <dependency id="AWSSDK.SQS" version="3.3.0.2" />
+        <dependency id="AWSSDK.Core" version="3.3.4" />
+      </group>
+    </dependencies>
+
+
+    <files>
+      <file src="..\NLog.Targets.SQS\bin\Release\NLog.Targets.SQS.dll" target="lib\net45" />
+    </files>
+
+  </metadata>
+</package>
