@@ -1,10 +1,8 @@
 # NLog.Targets.SQS
 
-NLog target for Amazon SQS. This target will publish log messages to a specified Amazon SQS queue.
+[NLog](http://nlog-project.org/) target for [Amazon SQS](https://aws.amazon.com/sqs/). This target will publish log messages to a specified Amazon SQS queue.
 
 License: [MIT](https://raw.githubusercontent.com/aireq/NLog.Targets.SQS/master/LICENSE).
-
-
 
 ### Example Config
 
@@ -20,8 +18,6 @@ License: [MIT](https://raw.githubusercontent.com/aireq/NLog.Targets.SQS/master/L
             AwsAccessKeyId="XXXXXXX"
             AwsSecretAccessKey="YYYYYYYYYY"/>
 ```
-
-
 
 ###General Options
 _name_ - Name of the target.
