@@ -22,6 +22,18 @@ namespace NLog.Targets.SQS.Tests
                 var region = Amazon.RegionEndpoint.GetBySystemName(target.RegionEndPoint);
                 using (var sqs_client = new Amazon.SQS.AmazonSQSClient(target.AwsAccessKeyId, target.AwsSecretAccessKey, region))
                 {
+
+
+                    var att = sqs_client.GetQueueAttributes(target.QueueUrl, new System.Collections.Generic.List<string>() { "All" });
+
+                    if (att.ApproximateNumberOfMessages > 0 | att.ApproximateNumberOfMessagesDelayed > 0 | att.ApproximateNumberOfMessagesNotVisible > 0)
+                    {
+                        sqs_client.PurgeQueue(target.QueueUrl);
+                    }
+
+                    
+
+
                     var logger = NLog.LogManager.GetCurrentClassLogger();
                     logger.Info(testMessageBody);
 
