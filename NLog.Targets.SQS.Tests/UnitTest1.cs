@@ -15,7 +15,9 @@ namespace NLog.Targets.SQS.Tests
         {
             try
             {
-                string testMessageBody = "This message from NLog.Targets.SQS";
+                Guid guid = Guid.NewGuid();
+
+                string testMessageBody = "Test message from NLog.Targets.SQS {" + guid + "]";
 
                 NLog.Targets.SQS.AwsSqsTarget target = (NLog.Targets.SQS.AwsSqsTarget)NLog.LogManager.Configuration.FindTargetByName("SQS Target");
 
@@ -23,7 +25,7 @@ namespace NLog.Targets.SQS.Tests
                 using (var sqs_client = new Amazon.SQS.AmazonSQSClient(target.AwsAccessKeyId, target.AwsSecretAccessKey, region))
                 {
 
-
+                    //Purge the target queue of existing messages
                     var att = sqs_client.GetQueueAttributes(target.QueueUrl, new System.Collections.Generic.List<string>() { "All" });
 
                     if (att.ApproximateNumberOfMessages > 0 | att.ApproximateNumberOfMessagesDelayed > 0 | att.ApproximateNumberOfMessagesNotVisible > 0)
@@ -31,11 +33,14 @@ namespace NLog.Targets.SQS.Tests
                         sqs_client.PurgeQueue(target.QueueUrl);
                     }
 
-                    
+
 
 
                     var logger = NLog.LogManager.GetCurrentClassLogger();
+
+
                     logger.Info(testMessageBody);
+
 
                     System.Threading.Thread.Sleep(1000);
 
