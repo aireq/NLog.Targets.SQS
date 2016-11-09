@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.Target.SQS", "NLog.Target.SQS\NLog.Target.SQS.csproj", "{7388332E-55D6-4079-8482-F71CBF2B78F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.Targets.SQS", "NLog.Targets.SQS\NLog.Targets.SQS.csproj", "{7388332E-55D6-4079-8482-F71CBF2B78F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
