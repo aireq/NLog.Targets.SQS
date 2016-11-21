@@ -4,6 +4,9 @@
 
 License: [MIT](https://raw.githubusercontent.com/aireq/NLog.Targets.SQS/master/LICENSE).
 
+
+[![Version](https://img.shields.io/nuget/v/NLog.Targets.SQS.svg)](https://www.nuget.org/packages/NLog.Targets.SQS)
+
 ### Example Config
 
 ```xml
