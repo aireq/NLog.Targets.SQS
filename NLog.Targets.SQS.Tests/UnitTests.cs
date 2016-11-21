@@ -44,7 +44,12 @@ namespace NLog.Targets.SQS.Tests
 
                     System.Threading.Thread.Sleep(1000);
 
-                    var messages = sqs_client.ReceiveMessage(target.QueueUrl);
+
+
+                    Amazon.SQS.Model.ReceiveMessageRequest recReq = new Amazon.SQS.Model.ReceiveMessageRequest(target.QueueUrl);
+                    recReq.MessageAttributeNames.Add("All");
+
+                    var messages = sqs_client.ReceiveMessage(recReq);
 
                     Assert.AreEqual(System.Net.HttpStatusCode.OK, messages.HttpStatusCode);
                     Assert.AreEqual(1, messages.Messages.Count);
@@ -53,9 +58,9 @@ namespace NLog.Targets.SQS.Tests
                     try
                     {
                         Assert.AreEqual(testMessageBody, message.Body);
-                        Assert.AreEqual("Info", message.Attributes["Level"]);
-                        Assert.AreEqual("NLog.Targets.SQS.Tests.UnitTests", message.Attributes["Logger"]);
-                        Assert.AreEqual("0", message.Attributes["SequenceID"]);
+                        Assert.AreEqual("Info", message.MessageAttributes["Level"].StringValue);
+                        Assert.AreEqual("NLog.Targets.SQS.Tests.UnitTests", message.MessageAttributes["Logger"].StringValue);
+                        Assert.IsNotNull(message.MessageAttributes["SequenceID"].StringValue);
                     }
                     finally
                     {
