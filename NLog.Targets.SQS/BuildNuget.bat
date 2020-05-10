@@ -1,0 +1,1 @@
+nuget pack NLog.Targets.SQS.csproj -properties Configuration=Release
