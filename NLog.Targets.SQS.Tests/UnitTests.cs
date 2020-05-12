@@ -1,76 +1,59 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
+using Xunit;
 
 namespace NLog.Targets.SQS.Tests
 {
-    [TestClass]
     public class UnitTests
     {
-
-
-
-
-        [TestMethod]
-        public void TestMethod1()
+        [Fact]
+        public async Task TestMethod1()
         {
-            try
+            Guid guid = Guid.NewGuid();
+
+            string testMessageBody = "Test message from NLog.Targets.SQS {" + guid + "]";
+
+            AwsSqsTarget target = (AwsSqsTarget)LogManager.Configuration.FindTargetByName("SQS Target");
+
+            var region = Amazon.RegionEndpoint.GetBySystemName(target.RegionEndPoint);
+            using (var sqs_client = new Amazon.SQS.AmazonSQSClient(target.AwsAccessKeyId, target.AwsSecretAccessKey, region))
             {
-                Guid guid = Guid.NewGuid();
+                //Purge the target queue of existing messages
+                var att =  await sqs_client.GetQueueAttributesAsync(target.QueueUrl, new System.Collections.Generic.List<string>() { "All" });
 
-                string testMessageBody = "Test message from NLog.Targets.SQS {" + guid + "]";
-
-                NLog.Targets.SQS.AwsSqsTarget target = (NLog.Targets.SQS.AwsSqsTarget)NLog.LogManager.Configuration.FindTargetByName("SQS Target");
-
-                var region = Amazon.RegionEndpoint.GetBySystemName(target.RegionEndPoint);
-                using (var sqs_client = new Amazon.SQS.AmazonSQSClient(target.AwsAccessKeyId, target.AwsSecretAccessKey, region))
+                if (att.ApproximateNumberOfMessages > 0 | att.ApproximateNumberOfMessagesDelayed > 0 | att.ApproximateNumberOfMessagesNotVisible > 0)
                 {
-
-                    //Purge the target queue of existing messages
-                    var att = sqs_client.GetQueueAttributes(target.QueueUrl, new System.Collections.Generic.List<string>() { "All" });
-
-                    if (att.ApproximateNumberOfMessages > 0 | att.ApproximateNumberOfMessagesDelayed > 0 | att.ApproximateNumberOfMessagesNotVisible > 0)
-                    {
-                        sqs_client.PurgeQueue(target.QueueUrl);
-                    }
-
-
-
-
-                    var logger = NLog.LogManager.GetCurrentClassLogger();
-
-
-                    logger.Info(testMessageBody);
-
-
-                    System.Threading.Thread.Sleep(1000);
-
-
-
-                    Amazon.SQS.Model.ReceiveMessageRequest recReq = new Amazon.SQS.Model.ReceiveMessageRequest(target.QueueUrl);
-                    recReq.MessageAttributeNames.Add("All");
-
-                    var messages = sqs_client.ReceiveMessage(recReq);
-
-                    Assert.AreEqual(System.Net.HttpStatusCode.OK, messages.HttpStatusCode);
-                    Assert.AreEqual(1, messages.Messages.Count);
-                    var message = messages.Messages[0];
-
-                    try
-                    {
-                        Assert.AreEqual(testMessageBody, message.Body);
-                        Assert.AreEqual("Info", message.MessageAttributes["Level"].StringValue);
-                        Assert.AreEqual("NLog.Targets.SQS.Tests.UnitTests", message.MessageAttributes["Logger"].StringValue);
-                        Assert.IsNotNull(message.MessageAttributes["SequenceID"].StringValue);
-                    }
-                    finally
-                    {
-                        sqs_client.DeleteMessage(target.QueueUrl, message.ReceiptHandle);
-                    }
+                    await sqs_client.PurgeQueueAsync(target.QueueUrl);
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+
+                var logger = LogManager.GetCurrentClassLogger();
+
+                logger.Info(testMessageBody);
+
+                System.Threading.Thread.Sleep(1000);
+
+                Amazon.SQS.Model.ReceiveMessageRequest recReq = new Amazon.SQS.Model.ReceiveMessageRequest(target.QueueUrl);
+                recReq.MessageAttributeNames.Add("Level");
+                recReq.MessageAttributeNames.Add("Logger");
+                recReq.MessageAttributeNames.Add("SequenceID");
+
+                var messages = await sqs_client.ReceiveMessageAsync(recReq);
+                    
+                Assert.Equal(System.Net.HttpStatusCode.OK, messages.HttpStatusCode);
+                Assert.Single(messages.Messages);
+                var message = messages.Messages[0];
+
+                try
+                {
+                    Assert.Equal(testMessageBody, message.Body);
+                    Assert.Equal("Info", message.MessageAttributes["Level"].StringValue);
+                    Assert.Equal("NLog.Targets.SQS.Tests.UnitTests", message.MessageAttributes["Logger"].StringValue);
+                    Assert.NotNull(message.MessageAttributes["SequenceID"].StringValue);
+                }
+                finally
+                {
+                    await sqs_client.DeleteMessageAsync(target.QueueUrl, message.ReceiptHandle);
+                }
             }
         }
     }
